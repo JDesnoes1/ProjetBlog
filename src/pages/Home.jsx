@@ -1,33 +1,49 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 
-function Home() {
-  const posts = [
-    {
-      id: 1,
-      title: "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
-      desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, vero!",
-      img: "http://fakeimg.pl/300/",
-    },
-    {
-      id: 2,
-      title: "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
-      desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, vero!",
-      img: "http://fakeimg.pl/300/",
-    },
-    {
-      id: 3,
-      title: "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
-      desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, vero!",
-      img: "http://fakeimg.pl/300/",
-    },
-    {
-      id: 4,
-      title: "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
-      desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, vero!",
-      img: "http://fakeimg.pl/300/",
-    },
-  ];
+const Home = () => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("/posts");
+        setPosts(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+  // const posts = [
+  //   {
+  //     id: 1,
+  //     title: "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
+  //     desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, vero!",
+  //     img: "http://fakeimg.pl/300/",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
+  //     desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, vero!",
+  //     img: "http://fakeimg.pl/300/",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
+  //     desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, vero!",
+  //     img: "http://fakeimg.pl/300/",
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
+  //     desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, vero!",
+  //     img: "http://fakeimg.pl/300/",
+  //   },
+  // ];
 
   return (
     <div className="home">
@@ -49,6 +65,6 @@ function Home() {
       </div>
     </div>
   );
-}
+};
 
 export default Home;

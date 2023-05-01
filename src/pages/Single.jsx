@@ -1,53 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Edit from "../img/edit.png";
 import Delete from "../img/delete.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Menu from "../components/Menu";
+import axios from "axios";
+import moment from "moment";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 function Single() {
+  const [post, setPost] = useState({});
+
+  const location = useLocation();
+
+  const postId = location.pathname.split("/")[2];
+
+  const { currentUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`/posts/${postId}`);
+        setPost(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [postId]);
+
   return (
     <div className="single">
       <div className="content">
-        <img src="http://fakeimg.pl/300/" alt="" />
+        <img src={post?.img} alt="" />
         <div className="user">
           <img src="http://fakeimg.pl/300/" alt="" />
           <div className="info">
-            <span>Jhon</span>
-            <p>Posted 2 days ago</p>
+            <span>{post.username}</span>
+            <p>Posted {moment(post.date).fromNow()}</p>
           </div>
-          <div className="edit">
-            <Link to={`/write?edit=2`}>
-              <img src={Edit} alt="" />
-            </Link>
-            <img src={Delete} alt="" />
-          </div>
+          {currentUser.username === post.username && (
+            <div className="edit">
+              <Link to={`/write?edit=2`}>
+                <img src={Edit} alt="" />
+              </Link>
+              <img src={Delete} alt="" />
+            </div>
+          )}
         </div>
-        <h1>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eum.
-        </h1>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eos eveniet
-          nihil quod commodi neque. Ab culpa molestias fugit veritatis
-          voluptates in odio recusandae ipsam perspiciatis.
-          <br />
-          <br />
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ut sapiente
-          hic, soluta mollitia qui voluptatem expedita provident debitis natus
-          optio cumque ea, eveniet perspiciatis voluptates.
-          <br />
-          <br />
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui aperiam
-          facere pariatur nihil saepe molestiae perspiciatis! Molestias numquam
-          sequi repellendus magnam, culpa deserunt commodi. Repellendus.
-          <br />
-          <br />
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate
-          error nulla porro animi a, totam cumque quibusdam expedita eos
-          deserunt accusamus modi! Omnis dolor, eum porro consequuntur vero
-          blanditiis tenetur quia fugiat quam sequi corporis minima recusandae
-          nesciunt nostrum consequatur possimus quaerat, aperiam temporibus qui
-          reiciendis dolorem dignissimos! Accusamus, ullam?
-        </p>
+        <h1>{post.title}</h1>
+        {post.desc}
       </div>
       <Menu />
     </div>
