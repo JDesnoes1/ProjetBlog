@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Home = () => {
@@ -18,32 +18,6 @@ const Home = () => {
     };
     fetchData();
   }, []);
-  // const posts = [
-  //   {
-  //     id: 1,
-  //     title: "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
-  //     desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, vero!",
-  //     img: "http://fakeimg.pl/300/",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
-  //     desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, vero!",
-  //     img: "http://fakeimg.pl/300/",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
-  //     desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, vero!",
-  //     img: "http://fakeimg.pl/300/",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
-  //     desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, vero!",
-  //     img: "http://fakeimg.pl/300/",
-  //   },
-  // ];
 
   return (
     <div className="home">
