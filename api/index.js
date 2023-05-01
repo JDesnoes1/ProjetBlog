@@ -10,8 +10,8 @@ app.use(express.json());
 const port = 8800;
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);
-app.use("/api/users", postRoutes);
-app.use("/api/posts", usersRoutes);
+app.use("/api/users", usersRoutes);
+app.use("/api/posts", postRoutes);
 
 app.listen(port, () => {
   console.log(`Vous êtes connecté sur le port : http://localhost:${port}`);
