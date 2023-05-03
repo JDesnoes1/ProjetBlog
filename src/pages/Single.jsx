@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Edit from "../img/edit.png";
 import Delete from "../img/delete.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Menu from "../components/Menu";
 import axios from "axios";
 import moment from "moment";
@@ -12,6 +12,7 @@ function Single() {
   const [post, setPost] = useState({});
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   const postId = location.pathname.split("/")[2];
 
@@ -29,29 +30,43 @@ function Single() {
     fetchData();
   }, [postId]);
 
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/posts/${postId}`);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getText = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent;
+  };
+
   return (
     <div className="single">
       <div className="content">
-        <img src={post?.img} alt="" />
+        <img src={`../upload/${post?.img}`} alt="" />
         <div className="user">
-          <img src="http://fakeimg.pl/300/" alt="" />
+          {post.userImg && <img src={post.userImg} alt="" />}
           <div className="info">
             <span>{post.username}</span>
             <p>Posted {moment(post.date).fromNow()}</p>
           </div>
           {currentUser.username === post.username && (
             <div className="edit">
-              <Link to={`/write?edit=2`}>
+              <Link to={`/write?edit=2`} state={post}>
                 <img src={Edit} alt="" />
               </Link>
-              <img src={Delete} alt="" />
+              <img onClick={handleDelete} src={Delete} alt="" />
             </div>
           )}
         </div>
         <h1>{post.title}</h1>
-        {post.desc}
+        {getText(post.desc)}
       </div>
-      <Menu />
+      <Menu cat={post.cat} />
     </div>
   );
 }
